@@ -55,15 +55,6 @@ class ServiceCatalogWebTest extends TestBase implements ISeleniumProviderFirefox
         return String.format("%s-%s", "service", name);
     }
 
-    @BeforeEach
-    void setUpDrivers() throws Exception {
-        if (selenium.getDriver() == null) {
-            selenium.setupDriver(buildDriver());
-        } else {
-            selenium.clearScreenShots();
-        }
-    }
-
     @AfterEach
     void tearDownWebConsoleTests() {
         if (!environment.skipCleanup()) {

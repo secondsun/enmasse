@@ -50,14 +50,12 @@ public class KubeCMDClient extends CmdClient {
             wr.write(definition);
             wr.flush();
             log.info("User '{}' created", defInFile.getAbsolutePath());
-            return execute(Arrays.asList(CMD, replace ? "replace" : "create", "-n", namespace, "-f", defInFile.getAbsolutePath()), DEFAULT_SYNC_TIMEOUT, true);
+            return execute(Arrays.asList(CMD, replace ? "replace" : "apply", "-n", namespace, "-f", defInFile.getAbsolutePath()), DEFAULT_SYNC_TIMEOUT, true);
         } catch (IOException e) {
             e.printStackTrace();
             throw e;
         } finally {
-            if (defInFile != null) {
-                Files.delete(Paths.get(defInFile.getAbsolutePath()));
-            }
+            Files.delete(Paths.get(defInFile.getAbsolutePath()));
         }
     }
 
@@ -294,5 +292,25 @@ public class KubeCMDClient extends CmdClient {
         Objects.requireNonNull(namespace);
         Objects.requireNonNull(addressspace);
         return execute(Arrays.asList(CMD, "-n", namespace, "get", "addressspace", addressspace, "-o", "jsonpath={.status.endpointStatuses[?(@.name==\"messaging\")].externalHost}"), DEFAULT_SYNC_TIMEOUT, true, false).getStdOut();
+    }
+
+    public static ExecutionResultData applyCR(String definition) throws IOException {
+        final File defInFile = new File("crdefinition.file");
+        try (FileWriter wr = new FileWriter(defInFile.getName())) {
+            wr.write(definition);
+            wr.flush();
+            log.info("User '{}' created", defInFile.getAbsolutePath());
+            return execute(Arrays.asList(CMD, "apply", "-f", defInFile.getAbsolutePath()), DEFAULT_SYNC_TIMEOUT, true);
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw e;
+        } finally {
+            Files.delete(Paths.get(defInFile.getAbsolutePath()));
+        }
+    }
+
+    public static ExecutionResultData deleteResource(String namespace, String resource, String name) {
+        List<String> ressourcesCmd = getRessourcesCmd("delete", resource, namespace, name, Optional.empty());
+        return execute(ressourcesCmd, DEFAULT_SYNC_TIMEOUT, true);
     }
 }

@@ -38,10 +38,6 @@ public abstract class GlobalConsoleTest extends TestBase implements ISeleniumPro
     @BeforeEach
     public void setUpWebConsoleTests() throws Exception {
         adminManager.setUp();
-        if (selenium.getDriver() == null)
-            selenium.setupDriver(buildDriver());
-        else
-            selenium.clearScreenShots();
     }
 
     @AfterEach

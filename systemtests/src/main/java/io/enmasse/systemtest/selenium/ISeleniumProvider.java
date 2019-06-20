@@ -7,6 +7,7 @@ package io.enmasse.systemtest.selenium;
 import io.enmasse.systemtest.Environment;
 import io.enmasse.systemtest.resolvers.ExtensionContextParameterResolver;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.openqa.selenium.WebDriver;
@@ -24,5 +25,13 @@ public interface ISeleniumProvider {
         }
         selenium.tearDownDrivers();
         SeleniumManagement.restartSeleniumApp();
+    }
+
+    @BeforeEach
+    default void ResetSelenium() throws Exception {
+        if (selenium.getDriver() == null)
+            selenium.setupDriver(buildDriver());
+        else
+            selenium.clearScreenShots();
     }
 }

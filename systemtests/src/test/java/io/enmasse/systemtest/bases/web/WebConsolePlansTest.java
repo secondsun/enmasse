@@ -45,13 +45,11 @@ public abstract class WebConsolePlansTest extends TestBase implements ISeleniumP
 
     @BeforeEach
     public void setUpWebConsoleTests() throws Exception {
-        selenium.setupDriver(buildDriver());
         adminManager.setUp();
     }
 
     @AfterEach
     public void tearDownDrivers() throws Exception {
-        selenium.tearDownDrivers();
         adminManager.tearDown();
     }
 

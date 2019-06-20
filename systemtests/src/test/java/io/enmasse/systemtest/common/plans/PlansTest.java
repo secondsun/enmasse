@@ -49,10 +49,6 @@ class PlansTest extends TestBase implements ISeleniumProviderChrome {
     @BeforeEach
     void setUp() throws Exception {
         adminManager.setUp();
-        if (selenium.getDriver() == null)
-            selenium.setupDriver(TestUtils.getChromeDriver());
-        else
-            selenium.clearScreenShots();
     }
 
     @AfterEach

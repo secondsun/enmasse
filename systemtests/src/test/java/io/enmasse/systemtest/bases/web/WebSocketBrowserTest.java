@@ -23,10 +23,6 @@ public abstract class WebSocketBrowserTest extends TestBaseWithShared implements
 
     @BeforeEach
     public void setUpWebConsoleTests() throws Exception {
-        if (selenium.getDriver() == null)
-            selenium.setupDriver(buildDriver());
-        else
-            selenium.clearScreenShots();
         rheaWebPage = new RheaWebPage(selenium);
         deleteAddresses(sharedAddressSpace);
     }

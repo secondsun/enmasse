@@ -57,48 +57,9 @@ class OperatorLifecycleManagerTest extends TestBase implements ISeleniumProvider
         page.createExampleResourceItem("addressplan");
         page.createExampleResourceItem("addressspaceplan");
         page.createExampleResourceItem("authenticationservice");
-        Thread.sleep(10_000);
-        TestUtils.waitUntilDeployed(infraNamespace);
-    }
-
-    @Test
-    void testCreateCustomResources() throws Exception {
-        Openshift4WebPage page = new Openshift4WebPage(selenium, getOCConsoleRoute(), clusterUser);
-        page.openOpenshiftPage();
-        page.openInstalledOperators();
-        page.selectNamespaceFromBar(infraNamespace);
-        page.selectOperator("enmasse");
-        page.createExampleResourceItem("standardinfraconfig");
-        page.createExampleResourceItem("brokeredinfraconfig");
-        page.createExampleResourceItem("addressplan");
-        page.createExampleResourceItem("addressspaceplan");
-
-        String data = "apiVersion: admin.enmasse.io/v1beta1\n" +
-                "kind: AuthenticationService\n" +
-                "metadata:\n" +
-                "  namespace: openshift-operators\n" +
-                "  name: standard-authservice\n" +
-                "spec:\n" +
-                "  type: standard";
-
-        page.createCustomResourceItem("authenticationservice", data);
-
-        Thread.sleep(10_000);
-        TestUtils.waitUntilDeployed(infraNamespace);
-
-        data = "apiVersion: enmasse.io/v1beta1\n" +
-                "kind: AddressSpace\n" +
-                "metadata:\n" +
-                "  namespace: openshift-operators\n" +
-                "  name: myspace\n" +
-                "spec:\n" +
-                "  type: standard\n" +
-                "  plan: standard-small";
-
-        page.createCustomResourceItem("addressspace", data);
+        page.createExampleResourceItem("addressspace");
         page.createExampleResourceItem("address");
         page.createExampleResourceItem("messaginguser");
-
         Thread.sleep(10_000);
         TestUtils.waitUntilDeployed(infraNamespace);
     }
